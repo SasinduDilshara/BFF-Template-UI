@@ -1,14 +1,11 @@
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import PropTypes from 'prop-types';
-import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import {
   Box,
-  Button,
   Divider,
   Drawer,
   Stack,
-  SvgIcon,
   Typography,
   useMediaQuery
 } from '@mui/material';
@@ -72,19 +69,7 @@ export const SideNav = (props) => {
               >
                 MegaPort
               </Typography>
-              <Typography
-                color="neutral.400"
-                variant="body2"
-              >
-                Production
-              </Typography>
             </div>
-            <SvgIcon
-              fontSize="small"
-              sx={{ color: 'neutral.500' }}
-            >
-              <ChevronUpDownIcon />
-            </SvgIcon>
           </Box>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />

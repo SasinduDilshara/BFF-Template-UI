@@ -4,7 +4,6 @@ import {
   Avatar,
   Box,
   Card,
-  Checkbox,
   Stack,
   Table,
   TableBody,
@@ -21,19 +20,11 @@ export const OrdersTable = (props) => {
   const {
     count = 0,
     items = [],
-    onDeselectAll,
-    onDeselectOne,
     onPageChange = () => {},
     onRowsPerPageChange,
-    onSelectAll,
-    onSelectOne,
     page = 0,
-    rowsPerPage = 0,
-    selected = []
+    rowsPerPage = 0
   } = props;
-
-  const selectedSome = (selected.length > 0) && (selected.length < items.length);
-  const selectedAll = (items.length > 0) && (selected.length === items.length);
 
   return (
     <Card>
@@ -61,14 +52,11 @@ export const OrdersTable = (props) => {
             </TableHead>
             <TableBody>
               {items.map((order) => {
-                const isSelected = selected.includes(order.id);
                 const createdAt = format(order.createdAt, 'dd/MM/yyyy');
-
                 return (
                   <TableRow
                     hover
                     key={order.id}
-                    selected={isSelected}
                   >
                     <TableCell>
                       <Stack
@@ -119,13 +107,8 @@ export const OrdersTable = (props) => {
 OrdersTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
-  onDeselectAll: PropTypes.func,
-  onDeselectOne: PropTypes.func,
   onPageChange: PropTypes.func,
   onRowsPerPageChange: PropTypes.func,
-  onSelectAll: PropTypes.func,
-  onSelectOne: PropTypes.func,
   page: PropTypes.number,
   rowsPerPage: PropTypes.number,
-  selected: PropTypes.array
 };
