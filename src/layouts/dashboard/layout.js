@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { styled } from '@mui/material/styles';
 import { SideNav } from './side-nav';
-import { TopNav } from './top-nav';
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -46,7 +45,6 @@ export const Layout = (props) => {
 
   return (
     <>
-      <TopNav onNavOpen={() => setOpenNav(true)} />
       <SideNav
         onClose={() => setOpenNav(false)}
         open={openNav}
