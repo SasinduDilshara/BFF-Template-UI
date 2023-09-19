@@ -13,7 +13,7 @@
 
 - [Dashboard Page](https://material-kit-react.devias.io)
 - [Companies Page](https://material-kit-react.devias.io/companies)
-- [Customers Page](https://material-kit-react.devias.io/customers)
+- [orders Page](https://material-kit-react.devias.io/orders)
 - [Account Page](https://material-kit-react.devias.io/account)
 - [Settings Page](https://material-kit-react.devias.io/settings)
 - [Login Page](https://material-kit-react.devias.io/auth/login)
@@ -83,7 +83,7 @@ material-kit-react
 		├── _document.js
 		├── account.js
 		├── companies.js
-		├── customers.js
+		├── orders.js
 		├── index.js
 		├── products.js
 		└── settings.js
