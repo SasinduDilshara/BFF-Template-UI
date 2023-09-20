@@ -1,20 +1,15 @@
 import PropTypes from 'prop-types';
-import { format } from 'date-fns';
 import {
-  Avatar,
   Box,
   Card,
-  Stack,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Typography
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
-import { getInitials } from 'src/utils/get-initials';
 
 export const OrdersTable = (props) => {
   const {
@@ -26,6 +21,8 @@ export const OrdersTable = (props) => {
     rowsPerPage = 0
   } = props;
 
+  console.log("Items: ", items);
+
   return (
     <Card>
       <Scrollbar>
@@ -34,55 +31,49 @@ export const OrdersTable = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Name
+                  ID
                 </TableCell>
                 <TableCell>
-                  Email
+                  Status
                 </TableCell>
                 <TableCell>
-                  Location
+                  Ship
                 </TableCell>
                 <TableCell>
-                  Phone
+                  Item
                 </TableCell>
                 <TableCell>
-                  Signed Up
+                  Quantity
+                </TableCell>
+                <TableCell>
+                  Date
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {items.map((order) => {
-                const createdAt = format(order.createdAt, 'dd/MM/yyyy');
                 return (
                   <TableRow
                     hover
-                    key={order.id}
+                    key={order.orderId}
                   >
                     <TableCell>
-                      <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}
-                      >
-                        <Avatar src={order.avatar}>
-                          {getInitials(order.name)}
-                        </Avatar>
-                        <Typography variant="subtitle2">
-                          {order.name}
-                        </Typography>
-                      </Stack>
+                      {order.orderId}
                     </TableCell>
                     <TableCell>
-                      {order.email}
+                      {order.status}
                     </TableCell>
                     <TableCell>
-                      {order.address.city}, {order.address.state}, {order.address.country}
+                      {order.shipId}
                     </TableCell>
                     <TableCell>
-                      {order.phone}
+                      {order.item}
                     </TableCell>
                     <TableCell>
-                      {createdAt}
+                      {order.quantity}
+                    </TableCell>
+                    <TableCell>
+                      {order.date}
                     </TableCell>
                   </TableRow>
                 );
