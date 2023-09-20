@@ -9,6 +9,7 @@ import { applyPagination } from 'src/utils/apply-pagination';
 import OrderSelect from 'src/sections/order/orders-dropdown';
 import { getCustomerOrderUrl, getOrderUrl } from 'src/constants/Constants';
 import { getAPI } from 'src/api/ApiHandler';
+import { da } from 'date-fns/locale';
 
 const useorders = (data, page, rowsPerPage) => {
   return useMemo(
@@ -28,17 +29,20 @@ const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const orders = useorders(data, page, rowsPerPage);
+  const [filter, setFilter] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
     try {
       const response = await getAPI(customer != '' && status != '' ? getCustomerOrderUrl + "?customer=" + customer + "&status=" + status: getOrderUrl);
-      setLoading(false);
       if (response.status !== 200) {
         setError(response.message);
       } else {
         setError(null);
-        setData(response.data)
+        const d = await response.data;
+        setData(d);
+        setLoading(false);
+        console.log("rowsPerPage", rowsPerPage)
       }
     } catch (error) {
       setError(error.message);
@@ -48,7 +52,8 @@ const Page = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+    console.log(data)
+  }, [filter, page, rowsPerPage]);
 
   const handlePageChange = useCallback(
     (event, value) => {
@@ -57,12 +62,18 @@ const Page = () => {
     []
   );
 
+  const onSearchButtonClick = (e) => {
+    e.preventDefault();
+    setFilter(!filter);
+  }
+
   const handleRowsPerPageChange = useCallback(
     (event) => {
       setRowsPerPage(event.target.value);
     },
     []
   );
+  
   const onSearchChange = (e) => {
     setCustomer(e.target.value);
   }
@@ -112,13 +123,19 @@ const Page = () => {
                 </Button>
               </div>
             </Stack>
-            <Stack direction={"row"}>
+            <Stack
+              direction="row"
+              alignContent={'center'}
+              >
             <OrdersSearch 
               onChange={onSearchChange} 
+              customer={customer}
             />
             <OrderSelect
               handleChange={onStatusChange}
+              status={status}
             />
+            <Button label="Search" value="Search" onClick={onSearchButtonClick}> Search </Button>
             </Stack>
             <OrdersTable
               count={data.length}

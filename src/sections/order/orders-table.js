@@ -64,7 +64,7 @@ export const OrdersTable = (props) => {
                       {order.status}
                     </TableCell>
                     <TableCell>
-                      {order.shipId}
+                      {order.shipId != null ? order.shipId : "Not Assigned"}
                     </TableCell>
                     <TableCell>
                       {order.item}

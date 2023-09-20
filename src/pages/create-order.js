@@ -9,9 +9,26 @@ import {
   TextField,
   Typography
 } from '@mui/material';
+import { useState } from 'react';
+import { postAPI } from 'src/api/ApiHandler';
+import { submitOrderUrl } from 'src/constants/Constants';
 
 const Page = () => {
   const router = useRouter();
+  const [error, setError] = useState(null);
+
+  const createID = () => {
+    const min = 100; // Minimum value (inclusive)
+    const max = 999; // Maximum value (inclusive)
+    const random = Math.floor(Math.random() * (max - min + 1)) + min;
+    return "HM-" + random.toString();
+  }
+
+  const createdDate = () => {
+    var today = new Date();
+    return today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  }
+
   const formik = useFormik({
     initialValues: {
       item: '',
@@ -32,12 +49,25 @@ const Page = () => {
         .max(255)
         .required('Username is required')
     }),
-    onSubmit: (values, helpers) => {
-      console.log(values);
+    onSubmit: async ({item, customer, quantity}, helpers) => {
+      console.log("Values", {item, customer, quantity});
       try {
-        // await auth.signIn(values.item, values.quantity);
-        router.push('/');
+        const response = await postAPI(submitOrderUrl, { date: createdDate(), item, customerId: customer, status: 'PENDING', shipId: null, orderId: createID(), quantity: parseInt(quantity) }, {
+          headers: {
+            requestId: "Calling the create order api /order/submit/"
+          }
+        });
+        if (response.error) {
+          console.log("Error1", response.error)
+          setError(true);
+          console.log(response.error)
+        } else {
+          setError(null);
+          router.push('/');
+        }
       } catch (err) {
+        console.log("Error2", err)
+        console.log("Err", err)
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
@@ -46,6 +76,7 @@ const Page = () => {
   });
 
   return (
+    // error != null ? <div>Something went wrong</div> :
     <>
       <Head>
         <title>

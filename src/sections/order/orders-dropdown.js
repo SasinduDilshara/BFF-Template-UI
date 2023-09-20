@@ -4,21 +4,17 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function OrderSelect({handleChange}) {
+export default function OrderSelect({handleChange, status}) {
   return (
     <div>
-      <FormControl sx={{ m: 1, minWidth: 80 }}>
-        <InputLabel id="status">Status</InputLabel>
+      <FormControl sx={{ p: 2, minWidth: 200, maxWidth: 500 }}>
         <Select
-          labelId="status"
           id="status"
+          label="status"
           onChange={handleChange}
           autoWidth
-          label="status"
+          value={status}
         >
-          <MenuItem value="PENDING">
-            <em>status</em>
-          </MenuItem>
           <MenuItem value="PENDING">PENDING</MenuItem>
           <MenuItem value="SHIPPED">SHIPPED</MenuItem>
           <MenuItem value="DELIVERED">DELIVERED</MenuItem>
