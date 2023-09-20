@@ -1,4 +1,3 @@
-import { useCallback, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
@@ -13,27 +12,30 @@ import {
 
 const Page = () => {
   const router = useRouter();
-  const [method, setMethod] = useState('email');
   const formik = useFormik({
     initialValues: {
-      email: 'demo@devias.io',
-      password: 'Password123!',
-      submit: null
+      item: '',
+      quantity: '',
+      customer: ''
     },
     validationSchema: Yup.object({
-      email: Yup
-        .string()
-        .email('Must be a valid email')
+      item: Yup
+        .string("Must be a string")
         .max(255)
-        .required('Email is required'),
-      password: Yup
-        .string()
+        .required('Item is required'),
+      quantity: Yup
+        .number("Must be a integer")
         .max(255)
-        .required('Password is required')
+        .required('Quantity is required'),
+      customer: Yup
+        .string("Must be a string")
+        .max(255)
+        .required('Username is required')
     }),
-    onSubmit: async (values, helpers) => {
+    onSubmit: (values, helpers) => {
+      console.log(values);
       try {
-        // await auth.signIn(values.email, values.password);
+        // await auth.signIn(values.item, values.quantity);
         router.push('/');
       } catch (err) {
         helpers.setStatus({ success: false });
@@ -43,18 +45,11 @@ const Page = () => {
     }
   });
 
-  const handleMethodChange = useCallback(
-    (event, value) => {
-      setMethod(value);
-    },
-    []
-  );
-
   return (
     <>
       <Head>
         <title>
-          Login | MegaPort Kit
+          MegaPort Kit
         </title>
       </Head>
       <Box
@@ -74,33 +69,48 @@ const Page = () => {
             width: '100%'
           }}
         >
+          <Typography variant="h4">
+                  Create a new Order
+          </Typography>
+          <Box
+          sx={{
+            py: '20px'
+          }}
+        />
           <div>
               <form
-                noValidate
                 onSubmit={formik.handleSubmit}
               >
                 <Stack spacing={3}>
                   <TextField
-                    error={!!(formik.touched.email && formik.errors.email)}
+                    error={!!(formik.touched.item && formik.errors.item)}
                     fullWidth
-                    helperText={formik.touched.email && formik.errors.email}
-                    label="Email Address"
-                    name="email"
+                    helperText={formik.touched.item && formik.errors.item}
+                    label="Item Name"
+                    name="item"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
-                    type="email"
-                    value={formik.values.email}
+                    value={formik.values.item}
                   />
                   <TextField
-                    error={!!(formik.touched.password && formik.errors.password)}
+                    error={!!(formik.touched.quantity && formik.errors.quantity)}
                     fullWidth
-                    helperText={formik.touched.password && formik.errors.password}
-                    label="Password"
-                    name="password"
+                    helperText={formik.touched.quantity && formik.errors.quantity}
+                    label="Quantity"
+                    name="quantity"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
-                    type="password"
-                    value={formik.values.password}
+                    value={formik.values.quantity}
+                  />
+                  <TextField
+                    error={!!(formik.touched.customer && formik.errors.customer)}
+                    fullWidth
+                    helperText={formik.touched.customer && formik.errors.customer}
+                    label="Username"
+                    name="customer"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    value={formik.values.customer}
                   />
                 </Stack>
                 {formik.errors.submit && (

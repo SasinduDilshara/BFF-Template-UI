@@ -229,6 +229,7 @@ const Page = () => {
                     </SvgIcon>
                   )}
                   variant="contained"
+                  href='/create-order'
                 >
                   Add
                 </Button>
