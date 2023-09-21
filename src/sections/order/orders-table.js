@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import {
   Box,
+  Button,
   Card,
   Table,
   TableBody,
@@ -13,12 +14,9 @@ import { Scrollbar } from 'src/components/scrollbar';
 
 export const OrdersTable = (props) => {
   const {
-    count = 0,
     items = [],
-    onPageChange = () => {},
-    onRowsPerPageChange,
-    page = 0,
-    rowsPerPage = 0
+    handleClick,
+    open = false
   } = props;
 
   console.log("Items: ", items);
@@ -75,6 +73,9 @@ export const OrdersTable = (props) => {
                     <TableCell>
                       {order.date}
                     </TableCell>
+                    <TableCell>
+                      <Button onClick={() => handleClick(order.orderId)}>View</Button>
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -82,15 +83,6 @@ export const OrdersTable = (props) => {
           </Table>
         </Box>
       </Scrollbar>
-      <TablePagination
-        component="div"
-        count={count}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
     </Card>
   );
 };
@@ -98,8 +90,6 @@ export const OrdersTable = (props) => {
 OrdersTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
-  onPageChange: PropTypes.func,
-  onRowsPerPageChange: PropTypes.func,
-  page: PropTypes.number,
-  rowsPerPage: PropTypes.number,
+  handleClick: PropTypes.func,
+  open: PropTypes.bool
 };

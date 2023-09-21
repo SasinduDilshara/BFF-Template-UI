@@ -9,16 +9,7 @@ import { applyPagination } from 'src/utils/apply-pagination';
 import OrderSelect from 'src/sections/order/orders-dropdown';
 import { getCustomerOrderUrl, getOrderUrl } from 'src/constants/Constants';
 import { getAPI } from 'src/api/ApiHandler';
-import { da } from 'date-fns/locale';
-
-const useorders = (data, page, rowsPerPage) => {
-  return useMemo(
-    () => {
-      return applyPagination(data, page, rowsPerPage);
-    },
-    [page, rowsPerPage]
-  );
-};
+import SimpleDialog from 'src/sections/order/view-order';
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
@@ -26,10 +17,34 @@ const Page = () => {
   const [data, setData] = useState([]);
   const [customer, setCustomer] = useState("");
   const [status, setStatus] = useState("");
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const orders = useorders(data, page, rowsPerPage);
   const [filter, setFilter] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [id, setId] = useState('');
+  const [order, setOrder] = useState('');
+
+  const fetchOrderData = async (orderId) => {
+    try {
+      const response = await getAPI(getOrderUrl + "/" + orderId);
+      if (response.status !== 200) {
+        setError(response.message);
+      } else {
+        setError(null);
+        setOrder(response.data);
+      }
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  const handleClickOpen = async (id) => {
+    setId(id);
+    await fetchOrderData(id);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -42,7 +57,6 @@ const Page = () => {
         const d = await response.data;
         setData(d);
         setLoading(false);
-        console.log("rowsPerPage", rowsPerPage)
       }
     } catch (error) {
       setError(error.message);
@@ -53,26 +67,17 @@ const Page = () => {
   useEffect(() => {
     fetchData();
     console.log(data)
-  }, [filter, page, rowsPerPage]);
+  }, [filter]);
 
-  const handlePageChange = useCallback(
-    (event, value) => {
-      setPage(value);
-    },
-    []
-  );
+  useEffect(() => {
+
+  }, [data]);
+
 
   const onSearchButtonClick = (e) => {
     e.preventDefault();
     setFilter(!filter);
   }
-
-  const handleRowsPerPageChange = useCallback(
-    (event) => {
-      setRowsPerPage(event.target.value);
-    },
-    []
-  );
   
   const onSearchChange = (e) => {
     setCustomer(e.target.value);
@@ -139,23 +144,22 @@ const Page = () => {
             </Stack>
             <OrdersTable
               count={data.length}
-              items={orders}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              page={page}
-              rowsPerPage={rowsPerPage}
+              items={data}
+              handleClick={handleClickOpen}
+              open={open}
             />
           </Stack>
         </Container>
+        <SimpleDialog
+          open={open}
+          onClose={handleClose}
+          id={id}
+          order={order}
+      />
       </Box>
     </>
   );
 };
 
-Page.getLayout = (page) => (
-  <DashboardLayout>
-    {page}
-  </DashboardLayout>
-);
 
 export default Page;
