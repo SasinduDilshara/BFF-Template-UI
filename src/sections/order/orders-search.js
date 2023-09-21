@@ -5,7 +5,7 @@ export const OrdersSearch = ({onChange, customer}) => (
   <Card sx={{ p: 2 }}>
     <OutlinedInput
       fullWidth
-      placeholder="Search order"
+      placeholder="Filter by customer"
       onChange={onChange}
       value={customer}
       startAdornment={(
