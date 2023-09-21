@@ -16,22 +16,22 @@ export default function SimpleDialog(props) {
       <DialogTitle sx={{textAlign:"center"}}>Order</DialogTitle>
       <ul style={{padding:"1rem 5rem"}}>
         <li>
-        <p>{"id -"} {order.orderId}</p>
+        <p><b>{"id -"}</b> {order.orderId}</p>
         </li>
         <li>
-        <p>{"status -"} {order.status}</p>
+        <p><b>{"status -"}</b> {order.status}</p>
         </li>
         <li>
-        <p>{"cargo -"} {order.shipId}</p>
+        <p><b>{"cargo -"}</b> {order.shipId == null ? "Not assigned": order.shipId}</p>
         </li>
         <li>
-        <p>{"customer -"} {order.customerId}</p>
+        <p><b>{"customer -"}</b> {order.customerId}</p>
         </li>
         <li>
-        <p>{"Item -"} {order.item}</p>
+        <p><b>{"Item -"}</b> {order.item}</p>
         </li>
         <li>
-        <p>{"quantity -"} {order.quantity}</p>
+        <p><b>{"quantity -"}</b> {order.quantity}</p>
         </li>
       </ul>
       </>
